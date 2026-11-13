@@ -47,16 +47,6 @@ Safari > Settings > Developer > "Allow unsigned extensions" (Safari turns this
 off each time it quits). Or open `iNat Batch Annotate/iNat Batch Annotate.xcodeproj`
 in Xcode, set your own team for both targets, and press Run.
 
-## Release (maintainer)
-
-1. One time: create a "Developer ID Application" certificate (Xcode > Settings >
-   Accounts > Manage Certificates), then save notarization credentials:
-   `xcrun notarytool store-credentials inat-notary --apple-id <apple id> --team-id WNN7X2QWF4`
-2. Increase `version` in `extension/manifest.json` and commit.
-3. `./release.sh --publish` archives, signs with Developer ID, notarizes, staples,
-   zips, tags `v<version>`, and creates the GitHub release.
-   Without `--publish` it only makes `build/release/iNat-Batch-Annotate-<version>.zip`.
-
 ## License
 
 MIT
