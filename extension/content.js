@@ -394,6 +394,13 @@
     renderAll( );
   }
 
+  // Stable reorder: observations that match fn go first. Scroll the grid to the top.
+  function moveToTop( fn ) {
+    state.obs = [...state.obs.filter( fn ), ...state.obs.filter( o => !fn( o ) )];
+    state.lastClickedIndex = null;
+    ui.grid.scrollTop = 0;
+  }
+
   function groupKey( o ) {
     return ( o.taxon && o.taxon.iconic_taxon_name ) || "Unknown";
   }
@@ -469,13 +476,15 @@
         class: `chip${nSel === n ? " on" : nSel ? " part" : ""}`,
         title: "Click: select only this group. Shift-click: add/remove this group.",
         onclick: e => {
+          const inGroup = o => groupKey( o ) === k;
+          const add = !e.shiftKey || nSel < n;
+          if ( add ) moveToTop( inGroup );
           if ( e.shiftKey ) {
-            const add = nSel < n;
-            state.obs.filter( o => groupKey( o ) === k ).forEach( o => (
+            state.obs.filter( inGroup ).forEach( o => (
               add ? state.selected.add( o.id ) : state.selected.delete( o.id ) ) );
             renderAll( );
           } else {
-            selectWhere( o => groupKey( o ) === k );
+            selectWhere( inGroup );
           }
         }
       }, `${k} ${n}` );
