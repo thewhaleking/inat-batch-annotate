@@ -579,7 +579,8 @@
   function togglePanel( ) {
     if ( !ui.host ) buildPanel( );
     state.open = !state.open;
-    ui.host.hidden = !state.open;
+    // Use inline style, not the hidden attribute: ":host { all: initial }" overrides [hidden].
+    ui.host.style.display = state.open ? "" : "none";
     if ( state.open ) {
       renderAll( );
       if ( !state.obs.length && !state.loading ) {
@@ -601,6 +602,7 @@
 
   const CSS = `
 :host { all: initial; }
+:host([hidden]) { display: none; }
 .panel {
   --bg: #ffffff; --fg: #1d1d1f; --muted: #6e6e73; --line: #d9d9de; --soft: #f3f4f1;
   --accent: #74ac00; --accent-fg: #ffffff; --accent-soft: #eaf3d6;
