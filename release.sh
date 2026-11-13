@@ -74,7 +74,7 @@ shasum -a 256 "$ZIP"
 
 if (( PUBLISH )); then
   echo "==> GitHub release v$VERSION"
-  git tag "v$VERSION"
+  git tag -a "v$VERSION" -m "v$VERSION"
   git push origin "v$VERSION"
   gh release create "v$VERSION" "$ZIP" --title "v$VERSION" --generate-notes
 fi
